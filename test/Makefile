@@ -9,6 +9,7 @@
 #		setenv ARCHDIR ../mips-x86.win32-xgcc
 
 # you need to point to the right executables
+ARCHDIR = /home/jose/Documentos/Nachos/mips-x86.linux-xgcc
 GCCDIR = $(ARCHDIR)/mips-
 
 ASFLAGS = -mips1

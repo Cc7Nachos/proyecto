@@ -21,15 +21,9 @@ public class Boat
     {
 	BoatGrader b = new BoatGrader();
 	
-	System.out.println("\n ***Testing Boats with only 2 children***");
+	System.out.println("\n ***Testing Boats with only 4 children and 3 adults***");
     System.out.println("");
-	begin(3, 4, b);
-
-//	System.out.println("\n ***Testing Boats with 2 children, 1 adult***");
-//  	begin(1, 2, b);
-
-//  	System.out.println("\n ***Testing Boats with 3 children, 3 adults***");
-//  	begin(3, 3, b);
+	begin(4, 5, b);
     }
 
     public static void begin( int adults, int children, BoatGrader b )

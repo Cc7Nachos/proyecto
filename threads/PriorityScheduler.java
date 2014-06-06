@@ -139,7 +139,6 @@ public class PriorityScheduler extends Scheduler {
 	    Lib.assertTrue(Machine.interrupt().disabled());
 	    //getThreadState(thread).acquire(this);
             
-            //BEGIN Nuestro Codigo
             ThreadState threadState = getThreadState(thread);
             if(threadStateHolder != null)
             {
@@ -148,13 +147,11 @@ public class PriorityScheduler extends Scheduler {
             waitingQueue.remove(threadState);
             threadStateHolder = threadState; 
            threadState.acquire(this);
-            //END Nuestro Codigo
 	}
 
 	public KThread nextThread() {
 	    Lib.assertTrue(Machine.interrupt().disabled());
 	    
-            //BEGIN Nuestro Codigo
             if(threadStateHolder != null)
             {
                 threadStateHolder.releaseAcquire();
@@ -167,7 +164,6 @@ public class PriorityScheduler extends Scheduler {
                 threadState.acquire(this);
                 return threadState.thread;
             }
-            //END Nuestro Codigo
 	    return null;
 	}
 
@@ -179,7 +175,6 @@ public class PriorityScheduler extends Scheduler {
 	 *		return.
 	 */
 	protected ThreadState pickNextThread() {
-            //BEGIN Nuestro Codigo
             ThreadState previousThreadStateInQueue = null;
             for(int x = 0; x < waitingQueue.size(); x++)
             {
@@ -190,9 +185,6 @@ public class PriorityScheduler extends Scheduler {
                 }
             }
             return previousThreadStateInQueue;
-            //END Nuestro Codigo
-            
-            //return null;
 	}
 	
 	public void print() {
@@ -200,7 +192,6 @@ public class PriorityScheduler extends Scheduler {
 	    // implement me (if you want)
 	}
         
-        //BEGIN
         public void addToQueue(ThreadState thread)
         {
             waitingQueue.add(thread);
@@ -215,7 +206,6 @@ public class PriorityScheduler extends Scheduler {
         {
             return threadStateHolder;
         }
-        //END
         
 
 	/**
@@ -223,10 +213,8 @@ public class PriorityScheduler extends Scheduler {
 	 * threads to the owning thread.
 	 */
 	public boolean transferPriority;
-        //BEGIN Nuestras Vars
         protected ArrayList<ThreadState> waitingQueue = new ArrayList<ThreadState>();
         protected ThreadState threadStateHolder;
-        //END Nuestras Vars
 
         
     }
@@ -267,10 +255,7 @@ public class PriorityScheduler extends Scheduler {
 	 */
 	public int getEffectivePriority() {
 	    // implement me
-	    //return priority;
-            //BEGIN
             return priority + priorityDonation;
-            //END
 	}
 
 	/**
@@ -283,8 +268,6 @@ public class PriorityScheduler extends Scheduler {
 		return;
 	    
 	    this.priority = priority;
-	    
-	    // implement me
 	}
 
 	/**
@@ -301,20 +284,17 @@ public class PriorityScheduler extends Scheduler {
 	 */
 	public void waitForAccess(PriorityQueue waitQueue) {
 	    // implement me
-            //BEGIN
             ThreadState thread = waitQueue.getThreadHolder();
             if(thread != null && waitQueue.transferPriority && this.getPriority() > thread.getEffectivePriority())
             {
                 thread.donatePriority(this.getPriority());
             }
             waitQueue.addToQueue(this);
-            //END
 	}
         
-        private void donatePriority(int donate)
-        {
-            priorityDonation = donate;
-        }
+    private void donatePriority(int donate){
+        priorityDonation = donate;
+    }
 
 	/**
 	 * Called when the associated thread has acquired access to whatever is
@@ -328,24 +308,18 @@ public class PriorityScheduler extends Scheduler {
 	 */
 	public void acquire(PriorityQueue waitQueue) {
 	    // implement me
-            //BEGIN
             waitQueue.setLock(this);
-            //END
 	}
-        //BEGIN
-        public void releaseAcquire()
-        {
-	    priorityDonation = 0;
+
+    public void releaseAcquire(){
+    	priorityDonation = 0;
 	}
-        //END
 
 	/** The thread with which this object is associated. */	   
 	protected KThread thread;
 	/** The priority of the associated thread. */
 	protected int priority;
-        //BEGIN Nuestras Vars
         protected int effectivePriority;
         protected int priorityDonation;
-        //END Nuestras Vars
     }
 }
